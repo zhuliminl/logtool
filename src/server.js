@@ -3,6 +3,7 @@ var bodyParser = require('body-parser');
 const http = require('http')
 const WebSocket = require('ws')
 const cors = require('cors')
+const adbFlow = require('../adb')
 
 var bodyParser = require('body-parser');
 
@@ -17,6 +18,9 @@ app.use(express.static('public'))
 const server = http.createServer(app);
 
 const wss = new WebSocket.Server({ server });
+
+console.log('saul 服务启动了')
+
 
 wss.on('connection', (ws) => {
 
@@ -42,6 +46,7 @@ app.post('/printlog', (req, res) => {
   res.sendStatus(200);
 })
 
+adbFlow(wss)
 
 
 server.listen(process.env.PORT || 8999, () => {

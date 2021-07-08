@@ -3,9 +3,12 @@ var bodyParser = require('body-parser');
 const http = require('http')
 const WebSocket = require('ws')
 const cors = require('cors')
-const adbFlow = require('../adb')
-
+const adbFlow = require('../adbFlow')
 var bodyParser = require('body-parser');
+const process = require('process')
+
+const { argv = [] } = process
+const tag = argv[2] || 'ez_log'
 
 const app = express();
 app.use(bodyParser.urlencoded({
@@ -19,7 +22,7 @@ const server = http.createServer(app);
 
 const wss = new WebSocket.Server({ server });
 
-console.log('saul 服务启动了')
+console.log('saul 服务启动了', tag)
 
 
 wss.on('connection', (ws) => {
@@ -46,7 +49,7 @@ app.post('/printlog', (req, res) => {
   res.sendStatus(200);
 })
 
-adbFlow(wss)
+adbFlow(wss, tag)
 
 
 server.listen(process.env.PORT || 8999, () => {

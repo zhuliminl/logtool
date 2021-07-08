@@ -12,6 +12,38 @@ export default class Home extends React.Component {
     }
   }
 
+  onVideoLog = (logStr = '') => {
+    if (logStr.includes('onReadyForDisplay')) {
+      console.log('视频开始播放')
+      console.log('---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------')
+    }
+    if (logStr.includes('logVideoShow')) {
+      console.log(logStr)
+      console.log('---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------')
+    }
+    if (logStr.includes('logVideoPlayError')) {
+      console.log(logStr)
+      console.log('---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------')
+    }
+    // console.log('saul logS  kj', logStr)
+
+  }
+
+  onEzLog = logStr => {
+
+  }
+
+  onGetLog = (logStr, tag) => {
+    // console.log(tag, logStr)
+    // 打印当前视频的数据
+    if (tag === 'video_log') {
+      this.onVideoLog(logStr)
+    }
+    if (tag === 'ez_log') {
+      this.onEzLog(logStr)
+    }
+  }
+
   componentWillMount() {
     client.onopen = () => {
       console.log('WebSocket Client Connected');
@@ -19,8 +51,9 @@ export default class Home extends React.Component {
     client.onmessage = (message) => {
       const { data = '{}' } = message
       const logData = JSON.parse(data)
-      const {logStr = ''} = logData
-      console.log('saul', logStr)
+      const { logStr = '', tag = '' } = logData
+      // console.log('saul', logStr)
+      this.onGetLog(logStr, tag)
       // this.setState({
       //   logs: this.state.logs.concat(dataStr)
       // })

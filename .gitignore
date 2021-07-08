@@ -1,2 +1,3 @@
 node_modules
+*.log
 log-app/node_modules
